@@ -19,7 +19,6 @@
     <script>
         var correctAnswer;
         isPlayable = false;
-        var answeredQuestions = [];
 
         var latitude;
         var longitude;
@@ -65,18 +64,8 @@
 
             $.getJSON('questions.json', function(loadedJson) {
                 console.log("Correct answer loaded:");
-                let isUnansweredQuestion = false;
-                do {
-                    var randomItem = Math.floor(Math.random() * loadedJson.length);
-                    var id = loadedJson[randomItem]['id'];
-                    if (!answeredQuestions.includes(id)) {
-                        isUnansweredQuestion = true;
-                    } else {
-                        continue;
-                    }
-                }
-                while (isUnansweredQuestion == false);
                 let randomItem = Math.floor(Math.random() * loadedJson.length);
+
                 correctAnswer = loadedJson[randomItem]['country'];
                 imgSrc = loadedJson[randomItem]['img'];
                 latitude = loadedJson[randomItem]['lat'];
@@ -95,7 +84,6 @@
 
                     shuffleQuestionSet(questionSet);
                     setImg(imgSrc);
-                    updateAnsweredQuestions(id);
                 });
             });
         }
@@ -160,11 +148,6 @@
             map.addDefaultControls();
             map.addLayer(markerLayer);
             markerLayer.enable();
-        }
-
-        function updateAnsweredQuestions(id) {
-            answeredQuestions.push(id);
-            sessionStorage.setItem('answered_questions', JSON.stringify(answeredQuestions));
         }
 
         $(document).ready(function() {
