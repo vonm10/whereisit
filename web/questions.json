@@ -1,0 +1,15 @@
+[{
+        "id": 0,
+        "country": "France",
+        "lat": 48.858093,
+        "lon": 2.294694,
+        "img": "resources/img/eiffel.jpg"
+    },
+    {
+        "id": 1,
+        "country": "England",
+        "lat": 52.355518,
+        "lon": -1.17432,
+        "img": "resources/img/stonehenge.jpg"
+    }
+]

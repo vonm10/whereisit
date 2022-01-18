@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="author" content="Matyas Vondra" />
+    <title>Where is it?</title>
+    <link rel="icon" type="image/x-icon" href="resources/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="css/styles.css" />
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://api.mapy.cz/loader.js"></script>
+    <script type="text/javascript">
+        Loader.lang = "en";
+        Loader.load()
+    </script>
+
+    <script>
+        var correctAnswer;
+        isPlayable = false;
+        var answeredQuestions = [];
+
+        var latitude;
+        var longitude;
+
+        var map;
+        var markerLayer = new SMap.Layer.Marker();
+
+        function setButtons(countries) {
+            console.log("Final set of countries:")
+            console.log(...countries);
+
+            for (let i = 0; i < countries.length; i++) {
+                let buttonName = "button" + i;
+                $("#" + buttonName).html(countries[i]);
+            }
+        }
+
+        function setImg(src) {
+            $("#photo").attr("src", src);
+        }
+
+        function shuffleQuestionSet(questionSet) {
+            let currentIndex = questionSet.length,
+                randomIndex;
+
+            while (currentIndex != 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+
+                [questionSet[currentIndex], questionSet[randomIndex]] = [
+                    questionSet[randomIndex], questionSet[currentIndex]
+                ];
+            }
+            console.log("Shuffled question set:");
+            console.log(...questionSet);
+
+            setButtons(questionSet);
+        }
+
+        function generateQuestionSet() {
+            let questionSet = [];
+            let imgSrc;
+
+            $.getJSON('questions.json', function(loadedJson) {
+                console.log("Correct answer loaded:");
+                let isUnansweredQuestion = false;
+                do {
+                    var randomItem = Math.floor(Math.random() * loadedJson.length);
+                    var id = loadedJson[randomItem]['id'];
+                    if (!answeredQuestions.includes(id)) {
+                        isUnansweredQuestion = true;
+                    } else {
+                        continue;
+                    }
+                }
+                while (isUnansweredQuestion == false);
+                let randomItem = Math.floor(Math.random() * loadedJson.length);
+                correctAnswer = loadedJson[randomItem]['country'];
+                imgSrc = loadedJson[randomItem]['img'];
+                latitude = loadedJson[randomItem]['lat'];
+                longitude = loadedJson[randomItem]['lon'];
+
+                console.log(correctAnswer);
+                questionSet.push(correctAnswer);
+
+                $.getJSON('countries.json', function(loadedJson) {
+                    console.log("Incorrect answers loaded:");
+                    for (let i = 0; i < 3; i++) {
+                        let randomCountry = Math.floor(Math.random() * loadedJson.length);
+                        console.log(loadedJson[randomCountry]['name']);
+                        questionSet.push(loadedJson[randomCountry]['name']);
+                    }
+
+                    shuffleQuestionSet(questionSet);
+                    setImg(imgSrc);
+                    updateAnsweredQuestions(id);
+                });
+            });
+        }
+
+        function revealAnswer(selectedAnswer) {
+            if (correctAnswer === selectedAnswer) {
+                $("#answer").html("Correct!");
+                $("#answer").css('visibility', 'visible');
+                console.log(selectedAnswer + "==" + correctAnswer);
+
+                addPoint();
+            } else {
+                $("#answer").html("False!");
+                $("#answer").css('visibility', 'visible');
+                console.log(selectedAnswer + "!=" + correctAnswer);
+            }
+
+            displayMap();
+        }
+
+        function displayMap() {
+            $("#photo").css('visibility', 'hidden');
+            $("#photo").css('display', 'none');
+            $("#map").css('visibility', 'visible');
+            $("#map").css('display', 'block');
+
+            setMap(longitude, latitude);
+        }
+
+        function displayPhoto() {
+            $("#map").css('visibility', 'hidden');
+            $("#map").css('display', 'none');
+            $("#photo").css('visibility', 'visible');
+            $("#photo").css('display', 'block');
+        }
+
+        function setMap(lon, lat) {
+            markerLayer.removeAll();
+            let coordinates = SMap.Coords.fromWGS84(lon, lat);
+            map.setCenterZoom(coordinates, 10);
+
+            var marker = new SMap.Marker(map.getCenter(), correctAnswer);
+            markerLayer.addMarker(marker);
+        }
+
+        function addPoint() {
+            let currentPoints = parseInt(sessionStorage.getItem("points"));
+            currentPoints = currentPoints + 1;
+            sessionStorage.setItem("points", currentPoints.toString());
+            $("#current_score").html("Current score: " + sessionStorage.getItem('points'));
+
+            if (currentPoints > localStorage['highscore']) {
+                localStorage.setItem('highscore', currentPoints.toString());
+                $("#highscore").html("Highscore: " + localStorage.getItem('highscore'));
+            }
+        }
+
+        function createMap() {
+            let center = SMap.Coords.fromWGS84(14.41, 50.08);
+            map = new SMap(JAK.gel("map"), center, 10);
+            map.addDefaultLayer(SMap.DEF_BASE).enable();
+            map.addDefaultControls();
+            map.addLayer(markerLayer);
+            markerLayer.enable();
+        }
+
+        function updateAnsweredQuestions(id) {
+            answeredQuestions.push(id);
+            sessionStorage.setItem('answered_questions', JSON.stringify(answeredQuestions));
+        }
+
+        $(document).ready(function() {
+            sessionStorage.setItem("points", 0);
+            if (localStorage['highscore'] === undefined) {
+                console.log("No previous highscore, setting to 0")
+                localStorage.setItem('highscore', 0);
+            }
+            $("#highscore").html("Highscore: " + localStorage.getItem('highscore'));
+
+            generateQuestionSet();
+            createMap();
+            displayPhoto();
+            $("#answer").css('visibility', 'hidden');
+            isPlayable = true;
+
+            $('#next_question_button').click(function() {
+                if (!isPlayable) {
+                    generateQuestionSet();
+                    $("#answer").css('visibility', 'hidden');
+                    displayPhoto();
+                    isPlayable = true;
+                }
+            });
+
+            $('.buttons').click(function() {
+                if (isPlayable) {
+                    let selectedAnswer = $(event.currentTarget).html();
+                    revealAnswer(selectedAnswer);
+                    isPlayable = false;
+                }
+            });
+
+        });
+    </script>
+</head>
+
+
+<body>
+    <div id="scoreboard">
+        <div id="current_score">Current score: 0</div>
+        <div id="highscore">Highscore: 0</div>
+    </div>
+    <h1>Where is it?</h1>
+    <main>
+        <div id="main_container">
+            <img id="photo" alt="photo" width="640" height="424" src="data:,">
+
+            <div id="map" style="width:640px; height:424px;">
+            </div>
+        </div>
+
+        <div id="buttons_div">
+            <button class="buttons" id="button0">Option 0</button>
+            <button class="buttons" id="button1">Option 1</button>
+            <button class="buttons" id="button2">Option 2</button>
+            <button class="buttons" id="button3">Option 3</button>
+        </div>
+        <div id="answer">Correct!</div>
+        <div id="next_question_container">
+            <button id="next_question_button">Next question</button>
+        </div>
+    </main>
+    <footer>
+        <div>
+            Created for 4IZ268 by vonm10
+        </div>
+        <div>
+            Photos licensed under CC0 from pixabay.com <br> 2022
+        </div>
+    </footer>
+</body>
+
+</html>
