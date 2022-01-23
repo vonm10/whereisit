@@ -1,3 +1,16 @@
-id,country,lat,lon,img
-0,France,48.858093,2.294694,resources/img/eiffel.jpg
-1,England,52.355518,-1.17432,resources/img/stonehenge.jpg
+id,country,name,lat,lon,img
+0,France,Eiffel Tower,48.858093,2.294694,resources/img/eiffel.jpg
+1,England,Stonehenge,52.355518,-1.17432,resources/img/stonehenge.jpg
+2,Belgium,Atomium,50.8949239,4.3415236,resources/img/atomium.jpg
+3,Germany,Brandenburg Gate,52.5162803,13.3777019,resources/img/brandenburg.jpg
+4,Italy,Santa Maria del Fiore,43.7731017,11.2565747,resources/img/florence.jpg
+5,Japan,Fushimi Inari,34.9669056,135.7749114,resources/img/fushimi.jpg
+6,Czechia,Karlstejn,49.9391167,14.1882903,resources/img/karlstejn.jpg
+7,Japan,Kinkakuji Temple,35.0395292,135.7295372,resources/img/kinkakuji.jpg
+8,United States,Statue of Liberty,40.6891764,74.0459467W,resources/img/liberty.jpg
+9,Russia,Red Square,55.7536283,37.6213794,resources/img/moscow.jpg
+10,Brazil,Christ Statue,22.9519172S,43.2104586W,resources/img/rioJesus.jpg
+11,Turkey,Pamukkale,37.9200381,29.1217528,resources/img/turkey.jpg
+12,China,Great Wall of China,40.1719189,112.1780853,resources/img/wall.jpg
+13,Poland,Wroclaw,51.1101981,17.0313794,resources/img/wroclaw.jpg
+14,United States,Yellowstone National Park,44.6223550,110.5612564W,resources/img/yellowstone.jpg

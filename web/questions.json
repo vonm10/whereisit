@@ -1,6 +1,7 @@
 [{
         "id": 0,
         "country": "France",
+        "name": "Eiffel Tower",
         "lat": 48.858093,
         "lon": 2.294694,
         "img": "resources/img/eiffel.jpg"
@@ -8,8 +9,113 @@
     {
         "id": 1,
         "country": "England",
+        "name": "Stonehenge",
         "lat": 52.355518,
         "lon": -1.17432,
         "img": "resources/img/stonehenge.jpg"
+    },
+    {
+        "id": 2,
+        "country": "Belgium",
+        "name": "Atomium",
+        "lat": 50.8949239,
+        "lon": 4.3415236,
+        "img": "resources/img/atomium.jpg"
+    },
+    {
+        "id": 3,
+        "country": "Germany",
+        "name": "Brandenburg Gate",
+        "lat": 52.5162803,
+        "lon": 13.3777019,
+        "img": "resources/img/brandenburg.jpg"
+    },
+    {
+        "id": 4,
+        "country": "Italy",
+        "name": "Santa Maria del Fiore",
+        "lat": 43.7731017,
+        "lon": 11.2565747,
+        "img": "resources/img/florence.jpg"
+    },
+    {
+        "id": 5,
+        "country": "Japan",
+        "name": "Fushimi Inari",
+        "lat": 34.9669056,
+        "lon": 135.7749114,
+        "img": "resources/img/fushimi.jpg"
+    },
+    {
+        "id": 6,
+        "country": "Czechia",
+        "name": "Karlstejn",
+        "lat": 49.9391167,
+        "lon": 14.1882903,
+        "img": "resources/img/karlstejn.jpg"
+    },
+    {
+        "id": 7,
+        "country": "Japan",
+        "name": "Kinkakuji Temple",
+        "lat": 35.0395292,
+        "lon": 135.7295372,
+        "img": "resources/img/kinkakuji.jpg"
+    },
+    {
+        "id": 8,
+        "country": "United States",
+        "name": "Statue of Liberty",
+        "lat": 40.6891764,
+        "lon": "74.0459467W",
+        "img": "resources/img/liberty.jpg"
+    },
+    {
+        "id": 9,
+        "country": "Russia",
+        "name": "Red Square",
+        "lat": 55.7536283,
+        "lon": 37.6213794,
+        "img": "resources/img/moscow.jpg"
+    },
+    {
+        "id": 10,
+        "country": "Brazil",
+        "name": "Christ Statue",
+        "lat": "22.9519172S",
+        "lon": "43.2104586W",
+        "img": "resources/img/rioJesus.jpg"
+    },
+    {
+        "id": 11,
+        "country": "Turkey",
+        "name": "Pamukkale",
+        "lat": 37.9200381,
+        "lon": 29.1217528,
+        "img": "resources/img/turkey.jpg"
+    },
+    {
+        "id": 12,
+        "country": "China",
+        "name": "Great Wall of China",
+        "lat": 40.1719189,
+        "lon": 112.1780853,
+        "img": "resources/img/wall.jpg"
+    },
+    {
+        "id": 13,
+        "country": "Poland",
+        "name": "Wroclaw",
+        "lat": 51.1101981,
+        "lon": 17.0313794,
+        "img": "resources/img/wroclaw.jpg"
+    },
+    {
+        "id": 14,
+        "country": "United States",
+        "name": "Yellowstone National Park",
+        "lat": 44.622355,
+        "lon": "110.5612564W",
+        "img": "resources/img/yellowstone.jpg"
     }
 ]
